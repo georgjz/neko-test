@@ -9,7 +9,7 @@ $ git clone --recursive https://github.com/georgjz/neko-test.git
 $ cd neko-test
 $ make
 ```
-The files of the Neko library are includes as a submodule. At the very beginning of the makefile there are two options you can set:
+The files of the Neko library files are includes as a submodule. At the very beginning of the makefile there are two options you can set:
 ```
 # Edit this portion to fit your project
 MMAP		= MemoryMap.cfg			# memory map file needed by ld65 linker
