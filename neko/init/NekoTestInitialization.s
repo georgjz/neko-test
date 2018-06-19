@@ -17,9 +17,11 @@
 ;
 
 ;----- Includes ----------------------------------------------------------------
-.include "MemoryUtils.inc"
+; .include "MemoryUtils.inc"
+; .include "NekoLibLauncher.inc"
+.include "NekoLib.inc"
+; .include "CPUMacros.inc"
 .include "SNESRegisters.inc"
-.include "CPUMacros.inc"
 .include "WRAMPointers.inc"
 .include "TileData.inc"
 ;-------------------------------------------------------------------------------
@@ -49,81 +51,50 @@
 
         ; load Chess Tile Set
         tsx                     ; save stack pointer
-        lda #$00                ; size bank
-        pha
-        pea $2000               ; size
-        lda #$01                ; word destination segment << 4
-        pha
-        lda #^ChessTileSet      ; bank source
-        pha
-        lda #>ChessTileSet      ; bank source
-        pha
-        lda #<ChessTileSet      ; bank source
-        pha
-        jsl LoadTileSet
+        PushSizeF $002000       ; move $002000 bytes
+        PushSizeB $01           ; destination segment $01
+        PushFarAddr ChessTileSet  ; source address
+        lda #LoadTileSetOpcode
+        jsl NekoLibLauncher
         txs                     ; restore stack pointer
         ; Chess Tile Set loaded
 
         ; load chess palette
-        tsx                     ; save stack pointer
-        ldy #$0c                ; size: 12 bytes
-        phy
-        lda #$00                ; destination: $00
-        pha
-        lda #^ChessPalette      ; source: ChessPalette
-        pha
-        lda #>ChessPalette
-        pha
-        lda #<ChessPalette
-        pha
-        jsl LoadPalette
+        ; BUGGY BUG
+        ; tsx                     ; save stack pointer
+        PushSizeB $0c           ; move 12 bytes
+        PushSizeB $00           ; destination: palette $00
+        PushFarAddr ChessPalette
+        lda #LoadPaletteOpcode
+        jsl NekoLibLauncher
         txs                     ; restore stack pointer
         ; chess palette loaded
 
         ; load tile map into VRAM
-        tsx                     ; save stack pointer
-        lda #$00                ; size $00:0800
-        pha
-        pea $0800
-        pha                     ; word destination segment << 2
-        lda #^ChessTileMap     ; source address
-        pha
-        lda #>ChessTileMap
-        pha
-        lda #<ChessTileMap
-        pha
-        jsl LoadTileMap
+        ; tsx                     ; save stack pointer
+        PushSizeF $000800       ; move 2KB
+        PushSizeB $00           ; destination: $0000
+        PushFarAddr ChessTileMap
+        lda #LoadTileMapOpcode
+        jsl NekoLibLauncher
         txs                     ; restore stack pointer
 
         ; load neko sprite sheet
-        tsx                     ; save stack pointer
-        lda #$00                ; size $00:4000
-        pha
-        pea $4000
-        lda #$02                ; destination segment $4000
-        pha
-        lda #^NekoSpriteSheet
-        pha
-        lda #>NekoSpriteSheet
-        pha
-        lda #<NekoSpriteSheet
-        pha
-        jsl LoadTileSet
+        ; tsx                     ; save stack pointer
+        PushSizeF $004000       ; move $004000 bytes
+        PushSizeB $02           ; destination segment $4000
+        PushFarAddr NekoSpriteSheet
+        lda #LoadTileSetOpcode
+        jsl NekoLibLauncher
         txs                     ; restore stack pointer
 
         ; load Neko Palette
-        tsx                     ; save stack pointer
-        ldy #$20                ; size: 32 bytes
-        phy
-        lda #$80                ; destination: $80
-        pha
-        lda #^NekoPalette
-        pha
-        lda #>NekoPalette
-        pha
-        lda #<NekoPalette
-        pha
-        jsl LoadPalette
+        ; tsx                     ; save stack pointer
+        PushSizeB $20           ; move 32 bytes
+        PushSizeB $80           ; destination: palette $80
+        PushFarAddr NekoPalette
+        lda #LoadPaletteOpcode
+        jsl NekoLibLauncher
         txs                     ; restore stack pointer
 
         ; set background options

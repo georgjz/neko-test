@@ -18,7 +18,8 @@
 
 ;----- Includes ----------------------------------------------------------------
 .include "SNESRegisters.inc"
-.include "CPUMacros.inc"
+; .include "CPUMacros.inc"
+.include "NekoLib.inc"
 .include "WRAMPointers.inc"
 .include "TileData.inc"
 .include "GameConstants.inc"
@@ -68,9 +69,8 @@ NekoAttrib          = OAM + $03
 ;-------------------------------------------------------------------------------
 .proc   UpdateNeko
         PreserveRegisters       ; preserve working registers
-        phk
-        ; phk
-        plb
+        phk                     ; set data bank register...
+        plb                     ; ...to current program bank
 
         ; check if buttons were pressed or held
         SetA16                  ; set A to 16 bit
@@ -121,7 +121,6 @@ Done:
         SetXY16
         SetA8
 
-        ; plk
         RestoreRegisters        ; restore working registers
         rts
 .endproc
@@ -146,7 +145,7 @@ Done:
         ; once the subroutine called here is done, that subroutine will return
         ; to the caller of NekoOpCodeLauncher
 .endproc
-;----- end of subroutine NekoOpCodeLauncher -----------------------------------
+;----- end of subroutine NekoOpCodeLauncher ------------------------------------
 
 NekoSubRoutineOpCodes:
 NekoJoypadHandlerOpCode  = $00

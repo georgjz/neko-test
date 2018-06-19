@@ -12,15 +12,15 @@
 ;
 
 ;----- Includes ----------------------------------------------------------------
-.include "MemoryUtils.inc"
-.include "InputUtils.inc"
 .include "SNESRegisters.inc"
-.include "SNESInitialization.inc"
-.include "CPUMacros.inc"
 .include "WRAMPointers.inc"
 .include "TileData.inc"
 .include "NekoTestInitialization.inc"
 .include "Neko.inc"
+
+.include "NekoLib.inc"
+; .include "NekoLibLauncher.inc"
+; .include "CPUMacros.inc"
 ;-------------------------------------------------------------------------------
 
 ;----- Assembler Directives ----------------------------------------------------
@@ -42,9 +42,9 @@
 ;   This is the entry point of the cradle
 ;-------------------------------------------------------------------------------
 .proc   ResetHandler
-        sei                     ; disable interrupts
-        clc                     ; set to native mode
-        xce
+        ; sei                     ; disable interrupts
+        ; clc                     ; set to native mode
+        ; xce
         SetXY16
         SetA8
         ldx #$1fff              ; set up stack
@@ -53,9 +53,15 @@
         sta INIDISP
         stz NMITIMEN            ; disable NMI
 
-        jsl ClearRegisters      ; set PPU and CPU registers to standard values
-        jsl ClearVRAM           ; write to complete V-RAM once
-        jsl ClearCGRAM          ; write to complete CG-RAM once
+        ; use the Neko Lib Launcher to call library subroutines
+        lda #ClearRegistersOpcode ; load library subroutine opcode into A
+        jsl NekoLibLauncher     ; launcher calls library subroutine
+        lda #ClearVRAMOpcode    ; rinse and repeat
+        jsl NekoLibLauncher
+        lda #ClearCGRAMOpcode   ; rinse and repeat
+        jsl NekoLibLauncher
+        phk                     ; restore data bank register
+        plb
 
         jsl ResetOAM
         jsl InitNekoCradle      ; initalize neko cradle data
@@ -96,17 +102,14 @@
         lda RDNMI                   ; read NMI status, aknowledge NMI
 
         ; read input
-        jsl PollJoypad1
+        lda #PollJoypad1Opcode
+        jsl NekoLibLauncher
 
         ; transfer OAM data
         tsx                         ; save stack pointer
-        lda #^OAM
-        pha
-        lda #>OAM
-        pha
-        lda #<OAM
-        pha
-        jsl UpdateOAMRAM
+        PushFarAddr OAM
+        lda #UpdateOAMRAMOpcode
+        jsl NekoLibLauncher
         txs                         ; restore stack pointer
 
         rti
