@@ -68,6 +68,9 @@ NekoAttrib          = OAM + $03
 ;-------------------------------------------------------------------------------
 .proc   UpdateNeko
         PreserveRegisters       ; preserve working registers
+        phk
+        ; phk
+        plb
 
         ; check if buttons were pressed or held
         SetA16                  ; set A to 16 bit
@@ -118,6 +121,7 @@ Done:
         SetXY16
         SetA8
 
+        ; plk
         RestoreRegisters        ; restore working registers
         rts
 .endproc
