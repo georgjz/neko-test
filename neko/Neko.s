@@ -18,7 +18,6 @@
 
 ;----- Includes ----------------------------------------------------------------
 .include "SNESRegisters.inc"
-; .include "CPUMacros.inc"
 .include "NekoLib.inc"
 .include "WRAMPointers.inc"
 .include "TileData.inc"

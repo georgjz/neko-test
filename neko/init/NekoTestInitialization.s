@@ -17,10 +17,7 @@
 ;
 
 ;----- Includes ----------------------------------------------------------------
-; .include "MemoryUtils.inc"
-; .include "NekoLibLauncher.inc"
 .include "NekoLib.inc"
-; .include "CPUMacros.inc"
 .include "SNESRegisters.inc"
 .include "WRAMPointers.inc"
 .include "TileData.inc"
@@ -60,8 +57,6 @@
         ; Chess Tile Set loaded
 
         ; load chess palette
-        ; BUGGY BUG
-        ; tsx                     ; save stack pointer
         PushSizeB $0c           ; move 12 bytes
         PushSizeB $00           ; destination: palette $00
         PushFarAddr ChessPalette
@@ -71,7 +66,6 @@
         ; chess palette loaded
 
         ; load tile map into VRAM
-        ; tsx                     ; save stack pointer
         PushSizeF $000800       ; move 2KB
         PushSizeB $00           ; destination: $0000
         PushFarAddr ChessTileMap
@@ -80,7 +74,6 @@
         txs                     ; restore stack pointer
 
         ; load neko sprite sheet
-        ; tsx                     ; save stack pointer
         PushSizeF $004000       ; move $004000 bytes
         PushSizeB $02           ; destination segment $4000
         PushFarAddr NekoSpriteSheet
@@ -89,7 +82,6 @@
         txs                     ; restore stack pointer
 
         ; load Neko Palette
-        ; tsx                     ; save stack pointer
         PushSizeB $20           ; move 32 bytes
         PushSizeB $80           ; destination: palette $80
         PushFarAddr NekoPalette

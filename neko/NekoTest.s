@@ -17,10 +17,7 @@
 .include "TileData.inc"
 .include "NekoTestInitialization.inc"
 .include "Neko.inc"
-
 .include "NekoLib.inc"
-; .include "NekoLibLauncher.inc"
-; .include "CPUMacros.inc"
 ;-------------------------------------------------------------------------------
 
 ;----- Assembler Directives ----------------------------------------------------
@@ -42,9 +39,6 @@
 ;   This is the entry point of the cradle
 ;-------------------------------------------------------------------------------
 .proc   ResetHandler
-        ; sei                     ; disable interrupts
-        ; clc                     ; set to native mode
-        ; xce
         SetXY16
         SetA8
         ldx #$1fff              ; set up stack
