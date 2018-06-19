@@ -19,7 +19,7 @@
 .include "CPUMacros.inc"
 .include "WRAMPointers.inc"
 .include "TileData.inc"
-.include "NekoCradleInitialization.inc"
+.include "NekoTestInitialization.inc"
 .include "Neko.inc"
 ;-------------------------------------------------------------------------------
 

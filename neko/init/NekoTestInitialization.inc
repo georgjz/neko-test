@@ -10,13 +10,13 @@
 ; The above copyright notice and this permission notice shall be included in
 ; all copies or substantial portions of the Software.
 ; -----------------------------------------------------------------------------
-;   File: NekoCradleInitialization.inc
+;   File: NekoTestInitialization.inc
 ;   Author(s): Georg Ziegler
-;   Description: This a header file for NekoCradleInitialization.s, include this
+;   Description: This a header file for NekoTestInitialization.s, include this
 ;   to use the subroutines in afore mentioned file
 ;
-.ifndef NEKOCRADLEINITIALIZATION_INC
-.define NEKOCRADLEINITIALIZATION_INC
+.ifndef NEKOTESTINITIALIZATION_INC
+.define NEKOTESTINITIALIZATION_INC
 
 ;-------------------------------------------------------------------------------
 ;   Routines found in this file
@@ -26,4 +26,4 @@
 .import     ResetOAM            ; Resets the OAM to $ff
 ;-------------------------------------------------------------------------------
 
-.endif  ; NEKOCRADLEINITIALIZATION_INC
+.endif  ; NEKOTESTINITIALIZATION_INC
