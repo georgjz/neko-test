@@ -96,11 +96,13 @@
         lda RDNMI                   ; read NMI status, aknowledge NMI
 
         ; read input
+        tsx                         ; save stack pointer
+        PushFarAddr Joy1Raw
         lda #PollJoypad1Opcode
         jsl NekoLibLauncher
 
         ; transfer OAM data
-        tsx                         ; save stack pointer
+        txs                         ; restore stack pointer
         PushFarAddr OAM
         lda #UpdateOAMRAMOpcode
         jsl NekoLibLauncher
